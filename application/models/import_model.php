@@ -179,5 +179,36 @@ class import_model extends CI_Model
 		
 		return $return;
 	}
+    
+    public function updatedifference($license)
+	{
+		$query=$this->db->query("SELECT * FROM `shipping_import` WHERE `license`='$license'  ORDER BY `id` ASC")->result();
+        if(empty($query))
+        {
+            return 0;
+        }
+        else
+        {
+            foreach($query as $key=>$value)
+            {
+                $id=$value->id;
+                $norm=$value->norm;
+                $finalqty=$value->finalqty;
+                $cifinusd=$value->cifinusd;
+                $importbalanceqty=$value->importbalanceqty;
+                $importbalanceamount=$value->importbalanceamount;
+                
+                $differenceqty=$finalqty-$importbalanceqty;
+                $differenceamount=$cifinusd-$importbalanceamount;
+                if($norm > 0)
+                {
+                    $uq="UPDATE `shipping_import` SET `differenceqty`='$differenceqty',`differenceamount`='$differenceamount' WHERE `id`='$id'";
+                    $updatequery=$this->db->query($uq);
+                }
+            }
+        }
+        
+	}
+    
 }
 ?>

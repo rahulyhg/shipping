@@ -950,6 +950,9 @@ class Site extends CI_Controller
         $data["page2"]="block/licenseblock";
         $license=$this->input->get("id");
         $data['license']=$license;
+        
+        $updatediff=$this->import_model->updatedifference($license);
+        
         $data["before"]=$this->license_model->beforeedit($license);
         $data["base_url"]=site_url("site/viewimportjson?license=".$license);
         $data["title"]="View import";
